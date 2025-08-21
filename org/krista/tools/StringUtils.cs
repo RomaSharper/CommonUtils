@@ -273,7 +273,7 @@ public static class StringUtils
             else if (decomposed[i] == '\u0142')
             {
                 decomposed.Remove(i, 1);
-                decomposed.Remove(i, 'l');
+                decomposed.Insert(i, 'l');
             }
         }
     }
