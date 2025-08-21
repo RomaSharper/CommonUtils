@@ -11,4 +11,9 @@ public static class ArrayUtils
     {
         return array == null || array.Length == 0;
     }
+
+    public static bool IsNotEmpty(string?[]? array)
+    {
+        return !IsEmpty(array);
+    }
 }

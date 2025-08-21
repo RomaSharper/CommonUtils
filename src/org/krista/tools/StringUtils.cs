@@ -29,7 +29,7 @@ public static class StringUtils
         return !IsEmpty(s);
     }
 
-    public static bool IsAnyEmpty(params string?[] ss)
+    public static bool IsAnyEmpty(params string?[]? ss)
     {
         if (ArrayUtils.IsEmpty(ss))
         {
@@ -45,7 +45,7 @@ public static class StringUtils
         return false;
     }
 
-    public static bool IsNoneEmpty(params string?[] ss)
+    public static bool IsNoneEmpty(params string?[]? ss)
     {
         return !IsAnyEmpty(ss);
     }
@@ -276,5 +276,122 @@ public static class StringUtils
                 decomposed.Remove(i, 'l');
             }
         }
+    }
+
+    public static bool Equals(string? str1, string? str2)
+    {
+        if (str1 == null || str2 == null)
+        {
+            return false;
+        }
+        if (str1.Length != str2.Length)
+        {
+            return false;
+        }
+        return str1 == str2;
+    }
+
+    public static bool EqualsIgnoreCase(string? str1, string? str2)
+    {
+        if (str1 == null || str2 == null)
+        {
+            return str1 == str2;
+        }
+        else if (str1.Length != str2.Length)
+        {
+            return false;
+        }
+        else if (str1 == str2)
+        {
+            return true;
+        }
+        else if (str1.Equals(str2, StringComparison.OrdinalIgnoreCase))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public static int Compare(string? str1, string? str2)
+    {
+        return Compare(str1, str2, true);
+    }
+
+    public static int Compare(string? str1, string? str2, bool nullIsLess)
+    {
+        if (str1 == str2)
+        {
+            return 0;
+        }
+        if (str1 == null)
+        {
+            return nullIsLess ? -1 : 1;
+        }
+        if (str2 == null)
+        {
+            return nullIsLess ? 1 : -1;
+        }
+        return str1.CompareTo(str2);
+    }
+
+    public static int CompareIgnoreCase(string? str1, string? str2)
+    {
+        return CompareIgnoreCase(str1, str2, true);
+    }
+
+    public static int CompareIgnoreCase(string? str1, string? str2, bool nullIsLess)
+    {
+        if (str1 == str2)
+        {
+            return 0;
+        }
+        if (str1 == null)
+        {
+            return nullIsLess ? -1 : 1;
+        }
+        if (str2 == null)
+        {
+            return nullIsLess ? 1 : -1;
+        }
+        return str1.ToLower().CompareTo(str2.ToLower());
+    }
+
+    public static bool EqualsAny(string? str, params string?[]? searchStrings)
+    {
+        if (ArrayUtils.IsNotEmpty(searchStrings))
+        {
+            foreach (string? next in searchStrings)
+            {
+                if (Equals(str, next))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static bool EqualsAnyIgnoreCase(string? str, params string?[]? searchStrings)
+    {
+        if (ArrayUtils.IsNotEmpty(searchStrings))
+        {
+            foreach (string? next in searchStrings)
+            {
+                if (EqualsIgnoreCase(str, next))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static int IndexOf(string str, char searchChar)
+    {
+        if (IsEmpty(str))
+        {
+            return IndexNotFound;
+        }
+        return str.IndexOf(searchChar);
     }
 }
