@@ -2,6 +2,8 @@ namespace org.krista.tools;
 
 public static class ArrayUtils
 {
+    public static readonly string[] EmptyStringArray = new string[0];
+    
     public static bool IsEmpty(string?[] array)
     {
         return array == null || array.Length == 0;

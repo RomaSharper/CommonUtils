@@ -356,7 +356,7 @@ public static class StringUtils
         return string.Compare(str1, str2, StringComparison.OrdinalIgnoreCase);
     }
 
-    public static bool EqualsAny(string? str, params string?[]? searchStrs)
+    public static bool EqualsAny(string? str, params string?[] searchStrs)
     {
         if (ArrayUtils.IsNotEmpty(searchStrs))
         {
@@ -371,7 +371,7 @@ public static class StringUtils
         return false;
     }
 
-    public static bool EqualsAnyIgnoreCase(string? str, params string?[]? searchStrs)
+    public static bool EqualsAnyIgnoreCase(string? str, params string?[] searchStrs)
     {
         if (ArrayUtils.IsNotEmpty(searchStrs))
         {
@@ -1036,5 +1036,134 @@ public static class StringUtils
             return str.Substring(pos);
         }
         return str.Substring(pos, pos + len);
+    }
+
+    public static string? SubstringBefore(string? str, string? separator)
+    {
+        if (IsEmpty(str) || separator == null)
+        {
+            return str;
+        }
+        if (IsEmpty(separator))
+        {
+            return Empty;
+        }
+        int pos = IndexOf(str, separator);
+        if (pos == IndexNotFound)
+        {
+            return str;
+        }
+        return Substring(str, 0, pos);
+    }
+
+    public static string? SubstringAfter(string? str, string? separator)
+    {
+        if (IsEmpty(str))
+        {
+            return str;
+        }
+        if (separator == null)
+        {
+            return Empty;
+        }
+        int pos = IndexOf(str, separator);
+        if (pos == IndexNotFound)
+        {
+            return Empty;
+        }
+        return Substring(str, pos + separator.Length);
+    }
+
+    public static string? SubstringBeforeLast(string? str, string? separator)
+    {
+        if (IsEmpty(str) || IsEmpty(separator))
+        {
+            return str;
+        }
+        int pos = LastIndexOf(str, separator);
+        if (pos == IndexNotFound)
+        {
+            return str;
+        }
+        return Substring(str, 0, pos);
+    }
+
+    public static string? SubstringAfterLast(string? str, string? separator)
+    {
+        if (IsEmpty(str))
+        {
+            return str;
+        }
+        if (IsEmpty(separator))
+        {
+            return Empty;
+        }
+        int pos = LastIndexOf(str, separator);
+        if (pos == IndexNotFound || pos == str.Length - separator.Length)
+        {
+            return Empty;
+        }
+        return Substring(str, pos + separator.Length);
+    }
+
+    public static string? SubstringBetween(string? str, string? tag)
+    {
+        return SubstringBetween(str, tag, tag);
+    }
+
+    public static string? SubstringBetween(string? str, string? open, string? close)
+    {
+        if (str == null || open == null || close == null)
+        {
+            return null;
+        }
+        int start = IndexOf(str, open);
+        if (start != IndexNotFound)
+        {
+            int end = IndexOf(str, close, start + open.Length);
+            if (end != IndexNotFound)
+            {
+                return Substring(str, start + open.Length, end);
+            }
+        }
+        return null;
+    }
+
+    public static string?[]? SubstringsBetween(string? str, string? open, string? close)
+    {
+        if (str == null || IsEmpty(open) || IsEmpty(close))
+        {
+            return null;
+        }
+        int strLen = str.Length;
+        if (strLen == 0)
+        {
+            return ArrayUtils.EmptyStringArray;
+        }
+        int closeLen = close.Length;
+        int openLen = open.Length;
+        List<string> list = [];
+        int pos = 0;
+        while (pos < strLen - closeLen)
+        {
+            int start = IndexOf(str, open, pos);
+            if (start < 0)
+            {
+                break;
+            }
+            start += openLen;
+            int end = IndexOf(str, close, start);
+            if (end < 0)
+            {
+                break;
+            }
+            list.Add(Substring(str, start, end));
+            pos = end + closeLen;
+        }
+        if (!list.Any())
+        {
+            return null;
+        }
+        return list.ToArray();
     }
 }

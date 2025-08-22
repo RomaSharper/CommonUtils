@@ -77,7 +77,39 @@ public class StringUtils_Tests
     {
         string input = "Hello, world";
         string result = StringUtils.Mid(input, 3, 3);
-        Console.WriteLine(result);
         Assert.That(result, Is.EqualTo("lo, wo"));
+    }
+
+    [Test]
+    public void SubstringBefore_ReturnsHello_WhenStringIsHelloWorldAndSeparatorIsComma()
+    {
+        string input = "Hello, world";
+        string result = StringUtils.SubstringBefore(input, ",");
+        Assert.That(result, Is.EqualTo("Hello"));
+    }
+
+    [Test]
+    public void SubstringAfter_ReturnsWorld_WhenStringIsHelloWorldAndSeparatorIsSpace()
+    {
+        string input = "Hello, world";
+        string result = StringUtils.SubstringAfter(input, StringUtils.Space);
+        Assert.That(result, Is.EqualTo("world"));
+    }
+
+    // TODO: 2 теста не работают, 1 возвращает ello вместо ell, второй выдаёт ошибку о выходе за границы массива
+    [Test]
+    public void SubstringBetween_ReturnsELl_WhenStringIsHelloWorldAndSeparatorsAreHAndO()
+    {
+        string input = "Hello, world";
+        string result = StringUtils.SubstringBetween(input, "H", "o");
+        Assert.That(result, Is.EqualTo("ell"));
+    }
+
+    [Test]
+    public void SubstringsBetween_ReturnsArray_WhenStringIsNiggerNetherNothernAndSeparatorsAreNAndR()
+    {
+        string input = "Nigger Nether Nother";
+        string[] result = StringUtils.SubstringsBetween(input, "N", "r");
+        Assert.That(result, Is.EquivalentTo(new string[] { "igge", "ethe", "othe" }));
     }
 }
